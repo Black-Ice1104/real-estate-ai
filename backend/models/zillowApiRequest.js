@@ -19,7 +19,7 @@ const GetDataFromAPI = async (location) => {
   
   try{
     const response = await axios.request(options);
-    return response.data;
+    return response.data.results;
   } catch (error) {
     console.error('API Request Failed: ', error);
     throw error;
