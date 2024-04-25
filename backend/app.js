@@ -1,8 +1,8 @@
 //const express = require('express');
 import express from 'express';
-import GetDataFromAPI from './backend/models/zillowApiRequest.js';
+import GetDataFromAPI from './models/zillowApiRequest.js';
 //const GetDataFromAPI = require('./backend/models/zillowApiRequest');
-import { Ad} from './backend/models/ads.js';
+import { Ad, findAds} from './models/ads.js';
 
 import mongoose from 'mongoose';
 
@@ -24,6 +24,16 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
+app.get('/Test', async(req, res) => {
+    
+    // res.send('Hello World!');
+    try{
+        const ads = await findAds({minPrice: 1, maxPrice: 800000, bedrooms: 3});
+        console.log('Retrieved ads:', ads);
+    } catch (error){
+        console.error('Error processing Test request: ', error);
+    }
+});
 app.post('/api/data', (req, res) => {
     console.log(req.body);  // 打印请求体到控制台
     res.send('Data received');
@@ -59,7 +69,8 @@ app.get('/fetch-store', async(req, res) => {
             currency: data.currency,
             bedrooms: data.bedrooms,
             bathrooms: data.bathrooms,
-            landSize: data.lotAreaValue + ' ' + data.lotAreaUnit,
+            landSize: data.lotAreaValue,
+            livingArea: data.livingArea,
             address: data.streetAddress,
             location: {
                 type: "Point",
