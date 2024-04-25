@@ -1,5 +1,5 @@
-const axios = require('axios');
-
+// const axios = require('axios');
+import axios from 'axios';
 /**
  * request Zillow API
  * @param {string} location (Input Ex: Los Angeles, CA) 
@@ -26,4 +26,6 @@ const GetDataFromAPI = async (location) => {
   }
 };
 
-module.exports = GetDataFromAPI;
+//module.exports = GetDataFromAPI;
+
+export default GetDataFromAPI;

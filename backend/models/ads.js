@@ -1,11 +1,8 @@
 import mongoose from "mongoose";
 
-mongoose.connect('', {
-  userNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect('mongodb://localhost:27017/zillowHouse')
 .then(() => console.log('MongoDB Connected!'))
-.catch(err => console.err('Failed to connect:', err));
+.catch(err => console.error('Failed to connect:', err));
 
 const { model, Schema, ObjectId } = mongoose;
 
@@ -46,8 +43,9 @@ const adSchema = new Schema(
     },
   }
 );
+adSchema.index({ location: "2dsphere" });
 
-const Ad = mongoose.model('Ad', adSchema);
+export const Ad = mongoose.model('Ad', adSchema);
 
 /**
  * qeury data 
@@ -77,5 +75,4 @@ export const insertMultipleData = (houseData) => {
   return Ad.insertMany(houseData);
 }
 
-adSchema.index({ location: "2dsphere" });
-export default mongoose.model("Ad", adSchema);
+// export default mongoose.model("Ad", adSchema);
