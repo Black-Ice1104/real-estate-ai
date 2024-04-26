@@ -3,17 +3,20 @@ import express from 'express';
 import GetDataFromAPI from './models/zillowApiRequest.js';
 //const GetDataFromAPI = require('./backend/models/zillowApiRequest');
 import { Ad, findAds} from './models/ads.js';
-
+import cors from 'cors';
 import mongoose from 'mongoose';
 
 
 const app = express();
-const port = 3000;
+const port = 3001;
+
+app.use(cors);
+app.use(express.json());
 
 mongoose.connect('mongodb+srv://admin:vLg7xAPUUXmloldC@backenddb.vrypwqn.mongodb.net/Node-API?retryWrites=true&w=majority&appName=BackendDB')
 .then(() => {
     console.log('MongoDB Connected!');
-    app.listen(3000, () => {
+    app.listen(port, () => {
         console.log('Server is running on port 3000');
     });
 })
