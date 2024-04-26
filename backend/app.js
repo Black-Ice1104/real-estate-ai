@@ -1,20 +1,23 @@
 //const express = require('express');
 import express from 'express';
-import GetDataFromAPI from './backend/models/zillowApiRequest.js';
+import GetDataFromAPI from './models/zillowApiRequest.js';
 //const GetDataFromAPI = require('./backend/models/zillowApiRequest');
-import { Ad} from './backend/models/ads.js';
-
+import { Ad, findAds} from './models/ads.js';
+// import cors from 'cors';
 import mongoose from 'mongoose';
 
 
 const app = express();
-const port = 3000;
+const port = 3001;
+
+//app.use(cors);
+app.use(express.json());
 
 mongoose.connect('mongodb+srv://admin:vLg7xAPUUXmloldC@backenddb.vrypwqn.mongodb.net/Node-API?retryWrites=true&w=majority&appName=BackendDB')
 .then(() => {
     console.log('MongoDB Connected!');
-    app.listen(3000, () => {
-        console.log('Server is running on port 3000');
+    app.listen(port, () => {
+        console.log('Server is running on port 3001');
     });
 })
 .catch(err => console.error('Failed to connect:', err));
@@ -24,6 +27,16 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
+app.get('/Test', async(req, res) => {
+    
+    // res.send('Hello World!');
+    try{
+        const ads = await findAds({minPrice: 1, maxPrice: 800000, bedrooms: 3});
+        console.log('Retrieved ads:', ads);
+    } catch (error){
+        console.error('Error processing Test request: ', error);
+    }
+});
 app.post('/api/data', (req, res) => {
     console.log(req.body);  // 打印请求体到控制台
     res.send('Data received');
@@ -59,7 +72,8 @@ app.get('/fetch-store', async(req, res) => {
             currency: data.currency,
             bedrooms: data.bedrooms,
             bathrooms: data.bathrooms,
-            landSize: data.lotAreaValue + ' ' + data.lotAreaUnit,
+            landSize: data.lotAreaValue,
+            livingArea: data.livingArea,
             address: data.streetAddress,
             location: {
                 type: "Point",
@@ -76,6 +90,11 @@ app.get('/fetch-store', async(req, res) => {
     }
 })
 
+//接受请求
+app.post('/data', (req, res) => {
+    console.log(req.body);
+    res.send();
+})
 // app.listen(port, () => {
 //     console.log(`服务器正在运行在 http://localhost:${port}`);
 // });
