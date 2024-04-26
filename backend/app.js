@@ -87,6 +87,11 @@ app.get('/fetch-store', async(req, res) => {
     }
 })
 
+//接受请求
+app.post('/data', (req, res) => {
+    console.log(req.body);
+    res.send();
+})
 // app.listen(port, () => {
 //     console.log(`服务器正在运行在 http://localhost:${port}`);
 // });
