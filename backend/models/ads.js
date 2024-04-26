@@ -95,8 +95,8 @@ export const findAds = async ({
 
     if(bedrooms) query.bedrooms = {$gte: bedrooms};
     if(bathrooms) query.bathrooms = {$gte: bathrooms};
-    if(city) query.bathrooms = {$gte: city};
-    if(state) query.bathrooms = {$gte: state};
+    if(city) query.city = city;
+    if(state) query.state = state;
     if(address) query.address = address;
 
     const ads = await Ad.find(query).exec();
