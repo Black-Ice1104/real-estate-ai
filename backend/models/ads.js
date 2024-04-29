@@ -99,7 +99,7 @@ export const findAds = async ({
     if(state) query.bathrooms = {$gte: state};
     if(address) query.address = address;
 
-    const ads = await Ad.find(query).exec();
+    const ads = await Ad.find(query).limit(10).exec();
     return ads;
   } catch (error) {
     console.error('Error querying:', error);
