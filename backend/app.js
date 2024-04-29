@@ -5,6 +5,7 @@ import GetDataFromAPI from './models/zillowApiRequest.js';
 import { Ad, findAds} from './models/ads.js';
 import cors from 'cors';
 import mongoose from 'mongoose';
+import {generateText} from '../backend/openai/generateText.js';
 
 
 const app = express();
@@ -25,6 +26,36 @@ mongoose.connect('mongodb+srv://admin:vLg7xAPUUXmloldC@backenddb.vrypwqn.mongodb
 app.get('/', (req, res) => {
     
     res.send('Hello World!');
+});
+app.post('/Search', async(req, res) => {
+    try{
+        const inputText = `Please analyze the following content ${req.body.text} and identify the corresponding variable values from the original text
+        minPrice = null,
+        maxPrice = null,
+        bedrooms = null,
+        bathrooms = null,
+        city = null,
+        state = null,
+        minLivingArea = null,
+        maxLivingArea = null,
+        minLandsize = null,
+        maxLandSize = null,
+        address = null,
+        If not mentioned, do not output corresponding parameter. Do not generate parameters which value is null! Please generate the corresponding JSON format. 
+        Please check very carefully, expecially for city or state, do not forget them. When using a state name, please use the abbreviation of that state.
+        Please note that there are more or less related words in the input statement than similar ones. Do not forget maxPrice or minPrice or maxPrice.`;
+
+        console.log('Received data: ', inputText);
+        const text = await generateText(inputText);
+        //const text = await generateText("Hello!");
+        
+        console.log('Get Data: ', text);
+        const result = await findAds(text);
+        console.log('Recieved result: ', result);
+        res.json(result);
+    } catch (error){
+        console.error('Error processing Search request: ', error);
+    }
 });
 
 app.get('/Test', async(req, res) => {
@@ -92,8 +123,9 @@ app.get('/fetch-store', async(req, res) => {
 
 //接受请求
 app.post('/data', (req, res) => {
-    console.log(req.body);
-    res.send();
+    const receivedText = req.body.text;
+    console.log('Reveived text: ',receivedText);
+    res.send('Text received successfully');
 })
 // app.listen(port, () => {
 //     console.log(`服务器正在运行在 http://localhost:${port}`);
