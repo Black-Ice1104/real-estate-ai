@@ -18,7 +18,6 @@ function MyFormComponent() {
     const handleSubmit = async (event) => {
         event.preventDefault();  // 阻止表单默认提交行为
         console.log('Sending data to backend:', inputValue);
-
         // 这里使用 fetch 发送数据到后端端口
         try {
             const response = await fetch('http://localhost:3001/Search', {
@@ -26,8 +25,9 @@ function MyFormComponent() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                // body: JSON.stringify({ data: inputValue })  // 将输入数据作为 JSON 发送
+                body: JSON.stringify({ data: inputValue })  // 将输入数据作为 JSON 发送
             });
+            console.log('Input value:', inputValue);
             const responseData = await response.json();
             console.log('Received from backend:', responseData);
             setData(responseData);
@@ -76,6 +76,10 @@ function MyFormComponent() {
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary">
                                         Price: ${item.price}
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        Address: {item.address}, {item.city}, {item.state}, {item.zipcode}
+
                                     </Typography>
                                 </CardContent>
                             </Card>
