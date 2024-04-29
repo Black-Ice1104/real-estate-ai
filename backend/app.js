@@ -41,7 +41,7 @@ app.post('/Search', async(req, res) => {
         minLandsize = null,
         maxLandSize = null,
         address = null,
-        If not mentioned, do not output corresponding parameter. Please generate the corresponding JSON format. 
+        If not mentioned, do not output corresponding parameter. Do not generate parameters which value is null! Please generate the corresponding JSON format. 
         Please check very carefully, expecially for city or state, do not forget them. When using a state name, please use the abbreviation of that state.
         Please note that there are more or less related words in the input statement than similar ones. Do not forget maxPrice or minPrice or maxPrice.`;
 
@@ -50,9 +50,9 @@ app.post('/Search', async(req, res) => {
         //const text = await generateText("Hello!");
         
         console.log('Get Data: ', text);
-        const resuslt = await findAds(text);
-        console.log('Recieved result: ', resuslt);
-        res.json(resuslt);
+        const result = await findAds(text);
+        console.log('Recieved result: ', result);
+        res.json(result);
     } catch (error){
         console.error('Error processing Search request: ', error);
     }

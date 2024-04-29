@@ -75,22 +75,23 @@ export const findAds = async ({
       query.price = {$gte: minPrice };
     } else if (maxPrice) {
       query.price = {$lte: maxPrice};
+      console.log("price less than ", price);
     }
 
     if(minLivingArea && maxLivingArea) {
-      query.price = {$gte:minLivingArea, $lte: maxLivingArea};
+      query.livingArea = {$gte:minLivingArea, $lte: maxLivingArea};
     } else if (minLivingArea) {
-      query.price = {$gte: minLivingArea };
+      query.livingArea = {$gte: minLivingArea };
     } else if (maxLivingArea) {
-      query.price = {$lte: maxLivingArea};
+      query.livingArea = {$lte: maxLivingArea};
     }
 
     if(minLandsize && maxLandSize) {
-      query.price = {$gte:minLandsize, $lte: maxLandSize};
+      query.landSize = {$gte:minLandsize, $lte: maxLandSize};
     } else if (minLandsize) {
-      query.price = {$gte: minLandsize };
+      query.landSize = {$gte: minLandsize };
     } else if (maxLandSize) {
-      query.price = {$lte: maxLandSize};
+      query.landSize = {$lte: maxLandSize};
     }
 
     if(bedrooms) query.bedrooms = {$gte: bedrooms};
