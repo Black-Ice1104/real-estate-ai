@@ -30,25 +30,26 @@ app.get('/', (req, res) => {
 app.post('/Search', async(req, res) => {
     try{
         const inputText = `Please analyze the following content ${req.body.text} and identify the corresponding variable values from the original text
-        minPrice = null,
-        maxPrice = null,
-        bedrooms = null,
-        bathrooms = null,
-        city = null,
-        state = null,
-        minLivingArea = null,
-        maxLivingArea = null,
-        minLandsize = null,
-        maxLandSize = null,
-        address = null,
+        minPrice number,
+        maxPrice number,
+        bedrooms number,
+        bathrooms number,
+        city string,
+        state string,
+        minLivingArea number,
+        maxLivingArea number,
+        minLandsize number,
+        maxLandSize number,
+        address string,
         If not mentioned, do not output corresponding parameter. Do not generate parameters which value is null! Please generate the corresponding JSON format. 
         Please check very carefully, expecially for city or state, do not forget them. When using a state name, please use the abbreviation of that state.
+        For cities, if they are abbreviated, please use their full name.
         Please note that there are more or less related words in the input statement than similar ones. Do not forget maxPrice or minPrice or maxPrice.`;
 
-        console.log('Received data: ', inputText);
+        // console.log('Received data: ', inputText);
         const text = await generateText(inputText);
+        // console.log("text type: " + typeof(text));
         //const text = await generateText("Hello!");
-        
         console.log('Get Data: ', text);
         const result = await findAds(text);
         console.log('Recieved result: ', result);
@@ -62,8 +63,9 @@ app.get('/Test', async(req, res) => {
     
     // res.send('Hello World!');
     try{
-        const ads = await findAds({minPrice: 1, maxPrice: 800000, bedrooms: 3});
+        const ads = await findAds({bedrooms: 3});
         console.log('Retrieved ads:', ads);
+        res.send();
     } catch (error){
         console.error('Error processing Test request: ', error);
     }

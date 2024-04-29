@@ -62,8 +62,6 @@ export const findAds = async ({
   state = null,
   minLivingArea = null,
   maxLivingArea = null,
-  minLandsize = null,
-  maxLandSize = null,
   address = null
 } = {}) => {
   try {
@@ -75,7 +73,6 @@ export const findAds = async ({
       query.price = {$gte: minPrice };
     } else if (maxPrice) {
       query.price = {$lte: maxPrice};
-      console.log("price less than ", price);
     }
 
     if(minLivingArea && maxLivingArea) {
@@ -86,20 +83,12 @@ export const findAds = async ({
       query.livingArea = {$lte: maxLivingArea};
     }
 
-    if(minLandsize && maxLandSize) {
-      query.landSize = {$gte:minLandsize, $lte: maxLandSize};
-    } else if (minLandsize) {
-      query.landSize = {$gte: minLandsize };
-    } else if (maxLandSize) {
-      query.landSize = {$lte: maxLandSize};
-    }
-
     if(bedrooms) query.bedrooms = {$gte: bedrooms};
     if(bathrooms) query.bathrooms = {$gte: bathrooms};
-    if(city) query.bathrooms = {$gte: city};
-    if(state) query.bathrooms = {$gte: state};
+    if(city) query.city = city;
+    if(state) query.state = state;
     if(address) query.address = address;
-
+    console.log(query);
     const ads = await Ad.find(query).limit(10).exec();
     return ads;
   } catch (error) {

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { response } from 'express';
 
 // 用你的OpenAI API密钥替换此处
 const apiKey = 'sk-proj-VWExIvjRxapFO5eQ3MblT3BlbkFJ8E1TadZwvjxTaJCjnPWR';
@@ -18,11 +19,15 @@ export async function generateText(prompt) {
         ],
         max_tokens: 150
     };
-
+    const params = {
+        response_format: {type: "json_object"},
+    };
     try {
         // 更新API URL以使用新的格式
         const response = await axios.post('https://api.openai.com/v1/chat/completions', data, { headers: headers });
-        return response.data.choices[0].message.content;
+        let content = response.data.choices[0].message.content;
+        content = JSON.parse(content);
+        return content;
     } catch (error) {
         console.error('Error calling OpenAI API:', error.response ? error.response.data : error.message);
         return null;
