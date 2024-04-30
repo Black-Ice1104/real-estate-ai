@@ -26,7 +26,7 @@ function MyFormComponent() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                // body: JSON.stringify({ data: inputValue })  // 将输入数据作为 JSON 发送
+                body: JSON.stringify({ data: inputValue })  // 将输入数据作为 JSON 发送
             });
             const responseData = await response.json();
             console.log('Received from backend:', responseData);
