@@ -2,7 +2,7 @@
 import express from 'express';
 import GetDataFromAPI from './models/zillowApiRequest.js';
 //const GetDataFromAPI = require('./backend/models/zillowApiRequest');
-import { Ad, findAds} from './models/ads.js';
+import { Ad, findAds, outPutAllCity} from './models/ads.js';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import {generateText} from '../backend/openai/generateText.js';
@@ -29,10 +29,14 @@ app.get('/', (req, res) => {
 });
 app.post('/Search', async(req, res) => {
     try{
-        console.log("body:" + req.body.data)
+        console.log("string: " + req.body.data);
         const inputText = `Please analyze the following content ${req.body.data} and identify the corresponding variable values from the original text
         minPrice number,
         maxPrice number,
+        minBedrooms number,
+        maxBedrooms number,
+        minBathrooms number,
+        maxBathrooms number,
         bedrooms number,
         bathrooms number,
         city string,
@@ -44,8 +48,9 @@ app.post('/Search', async(req, res) => {
         address string,
         If not mentioned, do not output corresponding parameter. Do not generate parameters which value is null! Please generate the corresponding JSON format. 
         Please check very carefully, expecially for city or state, do not forget them. When using a state name, please use the abbreviation of that state.
-        For cities, if they are abbreviated, please use their full name.
-        Please note that there are more or less related words in the input statement than similar ones. Do not forget maxPrice or minPrice or maxPrice.`;
+        For cities, if they are abbreviated, please use their full name. Do not give parameter 
+        Please note that there are more or less related words in the input statement than similar ones. Do not forget maxPrice or minPrice or maxPrice.
+        If content said need more or less bedrooms or bathrooms, please use minBedrooms, maxBedrooms, minBathrooms, maxBathrooms, instead of bedrooms or bathrooms`;
 
         // console.log('Received data: ', inputText);
         const text = await generateText(inputText);
@@ -59,7 +64,14 @@ app.post('/Search', async(req, res) => {
         console.error('Error processing Search request: ', error);
     }
 });
-
+app.get('/GetCities', async(req, res) => {
+    try{
+        const cities = await outPutAllCity();
+        res.json(cities);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
 app.get('/Test', async(req, res) => {
     
     // res.send('Hello World!');
@@ -81,8 +93,8 @@ app.get('/requestData', async(req, res) =>{
 
     try{
         const data = await GetDataFromAPI(location);
-        // let htmlRes = '<h1>Search Results for ${location}</h1>';
-        // htmlRes += '<pre>${JSON.stringfy(data, null, 2)}</pre>';
+        let htmlRes = '<h1>Search Results for ${location}</h1>';
+        htmlRes += '<pre>${JSON.stringfy(data, null, 2)}</pre>';
         res.send('Request');
         
         console.log(data);
@@ -94,19 +106,16 @@ app.get('/requestData', async(req, res) =>{
 
 app.get('/fetch-store', async(req, res) => {
     const location = req.query.location || 'Los Angeles, CA';
-
+    console.log(location);
     try {
         const data = await GetDataFromAPI(location);
-        res.send('Requset');
-        // console.log(data); 
-        
+        console.log(data);   
         await Ad.insertMany(data.map(data => ({
             photos: data.imgSrc,
             price: data.price,
             currency: data.currency,
             bedrooms: data.bedrooms,
             bathrooms: data.bathrooms,
-            landSize: data.lotAreaValue,
             livingArea: data.livingArea,
             address: data.streetAddress,
             location: {
@@ -117,7 +126,8 @@ app.get('/fetch-store', async(req, res) => {
             title: data.streetAddress,
             city: data.city,
             state: data.state
-        })));   
+        })), {ordered: false});
+        res.send('Requset');   
     } catch (error) {
         console.error('Error occured while requesting', error);
         res.status(500).json({message: 'server error'});

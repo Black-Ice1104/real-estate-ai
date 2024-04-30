@@ -13,11 +13,11 @@ const adSchema = new Schema(
     currency: String,
     bedrooms: Number,
     bathrooms: Number,
-    landsize: Number,
     livingArea: Number,
     address: {
       type: String,
       required: true,
+      unique: true
     },
     // url: {
     //     type: String,
@@ -44,6 +44,14 @@ const adSchema = new Schema(
     state: String
   }
 );
+adSchema.pre('save', function(next) {
+  if (!this.location.coordinates.every(coord => typeof coord === 'number')) {
+    next(new Error('Coordinates must be numbers'));
+  } else {
+    next();
+  }
+});
+
 adSchema.index({ location: "2dsphere" });
 
 export const Ad = mongoose.model('Ad', adSchema);
@@ -56,6 +64,10 @@ export const Ad = mongoose.model('Ad', adSchema);
 export const findAds = async ({
   minPrice = null,
   maxPrice = null,
+  minBedrooms = null,
+  maxBedrooms = null,
+  minBathrooms = null,
+  maxBathrooms = null,
   bedrooms = null,
   bathrooms = null,
   city = null,
@@ -83,8 +95,26 @@ export const findAds = async ({
       query.livingArea = {$lte: maxLivingArea};
     }
 
-    if(bedrooms) query.bedrooms = {$gte: bedrooms};
-    if(bathrooms) query.bathrooms = {$gte: bathrooms};
+    if(bedrooms){
+      query.bedrooms = bedrooms;
+    } else if (minBedrooms && maxBedrooms){
+      query.bedrooms = {$gte: minBedrooms, $lte: maxBedrooms};
+    } else if (minBedrooms){
+      query.bedrooms = {$gte: minBedrooms};
+    } else if (maxBedrooms){
+      query.bedrooms = {$lte: maxBedrooms};
+    }
+
+    if(bathrooms){
+      query.bathrooms = bathrooms;
+    } else if (minBathrooms && maxBathrooms){
+      query.bathrooms = {$gte: minBathrooms, $lte: maxBathrooms};
+    } else if (minBathrooms){
+      query.bathrooms = {$gte: minBathrooms};
+    } else if (maxBathrooms){
+      query.bathrooms = {$lte: maxBathrooms};
+    }
+
     if(city) query.city = city;
     if(state) query.state = state;
     if(address) query.address = address;
@@ -122,4 +152,13 @@ export const insertMultipleData = async (houseData) => {
   }
 }
 
+export const outPutAllCity = async () => {
+  try{
+    const cities = await Ad.distinct('city');
+    return cities;
+  } catch (error) {
+    console.error('Error querying distince cities:', error);
+    throw error;
+  }
+}
 // export default mongoose.model("Ad", adSchema);

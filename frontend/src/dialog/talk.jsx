@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TextField, Button, Card, CardMedia, CardContent, Typography, Grid } from '@mui/material';
-
+import CityList from '../cityList/CityList';
 
 function MyFormComponent() {
     const dialogStyle = {
@@ -37,20 +37,22 @@ function MyFormComponent() {
     };
 
     return (
-        <form onSubmit={handleSubmit} style={dialogStyle}>
-            <TextField
-                multiline
-                rows={4}
-                label="Type something"
-                variant="outlined"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                fullWidth
-            />
-            <Button type="submit" variant="contained" color="primary">
-                Submit
-            </Button>
-            {data.length > 0 ? (
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <div style={{ width: '70%', display: 'flex', justifyContent: 'center', justifyContent: 'flex-start', marginTop: '10vh', marginLeft:'10vh' }}>
+                <form onSubmit={handleSubmit} style={{ width: '80%' }}> {/* 调整内部宽度为80%以进一步居中 */}
+                    <TextField
+                        multiline
+                        rows={4}
+                        label="Type something"
+                        variant="outlined"
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                        fullWidth
+                    />
+                    <Button type="submit" variant="contained" color="primary">
+                        Submit
+                    </Button>
+                    {data.length > 0 ? (
                 <Grid container spacing={2}>
                     {data.map((item, index) => (
                         <Grid item key={index} xs={12} sm={6} md={4}>
@@ -91,7 +93,12 @@ function MyFormComponent() {
                     No Result Found
                 </Typography>
             )}
-        </form>
+                </form>
+            </div>
+            <div style={{ position: 'fixed', right: 0, top: 0, width: '30%', height: '100vh', overflowY: 'auto' }}>
+                <CityList />
+            </div>
+        </div>
     );
 }
 
