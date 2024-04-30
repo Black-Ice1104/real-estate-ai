@@ -29,7 +29,8 @@ app.get('/', (req, res) => {
 });
 app.post('/Search', async(req, res) => {
     try{
-        const inputText = `Please analyze the following content ${req.body.text} and identify the corresponding variable values from the original text
+        console.log("body:" + req.body.data)
+        const inputText = `Please analyze the following content ${req.body.data} and identify the corresponding variable values from the original text
         minPrice number,
         maxPrice number,
         bedrooms number,
