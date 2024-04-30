@@ -152,4 +152,13 @@ export const insertMultipleData = async (houseData) => {
   }
 }
 
+export const outPutAllCity = async () => {
+  try{
+    const cities = await Ad.distinct('city');
+    return cities;
+  } catch (error) {
+    console.error('Error querying distince cities:', error);
+    throw error;
+  }
+}
 // export default mongoose.model("Ad", adSchema);

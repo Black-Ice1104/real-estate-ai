@@ -2,7 +2,7 @@
 import express from 'express';
 import GetDataFromAPI from './models/zillowApiRequest.js';
 //const GetDataFromAPI = require('./backend/models/zillowApiRequest');
-import { Ad, findAds} from './models/ads.js';
+import { Ad, findAds, outPutAllCity} from './models/ads.js';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import {generateText} from '../backend/openai/generateText.js';
@@ -64,7 +64,14 @@ app.post('/Search', async(req, res) => {
         console.error('Error processing Search request: ', error);
     }
 });
-
+app.get('/GetCities', async(req, res) => {
+    try{
+        const cities = await outPutAllCity();
+        res.json(cities);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
 app.get('/Test', async(req, res) => {
     
     // res.send('Hello World!');
