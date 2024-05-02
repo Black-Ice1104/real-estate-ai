@@ -3,6 +3,7 @@ import { TextField, Button, Card, CardMedia, CardContent, Typography, Grid } fro
 import CityList from '../cityList/CityList';
 import LoginPage from '../logIn/logIn';
 import SignUpPage from '../signUp/signUp';
+import LogOutComponent from '../logOut/logOut';
 
 function MyFormComponent() {
     const dialogStyle = {
@@ -16,15 +17,18 @@ function MyFormComponent() {
 
     const [inputValue, setInputValue] = useState('');
     const [data, setData] = useState([]);
-
+    
     const handleSubmit = async (event) => {
         event.preventDefault();
+        const token = localStorage.getItem('token');
+        console.log(token);
         console.log('Sending data to backend:', inputValue);
         try {
             const response = await fetch('http://localhost:3001/Search', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization' : `Bearer ${token}`
                 },
                 body: JSON.stringify({ data: inputValue })
             });
@@ -34,6 +38,7 @@ function MyFormComponent() {
             setData(responseData);
         } catch (error) {
             console.error('Error sending data to backend:', error);
+            alert(error);
         }
     };
 
@@ -47,6 +52,7 @@ function MyFormComponent() {
                         <div style={{ display: 'flex', flexDirection: 'row' }}>
                             <LoginPage/>
                             <SignUpPage />
+                            <LogOutComponent/>
                         </div>
 
 

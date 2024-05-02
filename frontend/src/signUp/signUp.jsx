@@ -14,10 +14,27 @@ function SignUpPage() {
         setOpen(false);
     };
 
-    const handleSignUp = () => {
+    const handleSignUp = async() => {
         console.log('Username:', username, 'Password:', password);
-        // 这里可以添加登录逻辑
-        handleClose(); // 登录后关闭对话框
+        try{
+            const response = await fetch('http://localhost:3001/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type' : 'application/json',
+                },
+                body: JSON.stringify({ username, password })
+            });
+            const data = await response.json();
+            if (data.token) {
+                localStorage.setItem('token', data.token);
+                console.log('token: ', data.token);
+                alert('Signup successfully');
+                handleClose();
+            }
+        } catch (error) {
+            console.error('Error during Signup:', error);
+        }
+        handleClose(); 
     };
 
     return (

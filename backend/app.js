@@ -6,8 +6,8 @@ import { Ad, findAds, outPutAllCity} from './models/ads.js';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import {generateText} from '../backend/openai/generateText.js';
-
-
+import userRoutes from './router/userRoutes.js';
+import {authenticate, checkRole} from './middleware/auth.js';
 const app = express();
 const port = 3001;
 
@@ -23,11 +23,52 @@ mongoose.connect('mongodb+srv://admin:vLg7xAPUUXmloldC@backenddb.vrypwqn.mongodb
 })
 .catch(err => console.error('Failed to connect:', err));
 
+app.use('/api', userRoutes);
+
 app.get('/', (req, res) => {
     
     res.send('Hello World!');
 });
-app.post('/Search', async(req, res) => {
+
+// app.post('/Search', async(req, res) => {
+//     try{
+//         console.log("string: " + req.body.data);
+//         const inputText = `Please analyze the following content ${req.body.data} and identify the corresponding variable values from the original text
+//         minPrice number,
+//         maxPrice number,
+//         minBedrooms number,
+//         maxBedrooms number,
+//         minBathrooms number,
+//         maxBathrooms number,
+//         bedrooms number,
+//         bathrooms number,
+//         city string,
+//         state string,
+//         minLivingArea number,
+//         maxLivingArea number,
+//         minLandsize number,
+//         maxLandSize number,
+//         address string,
+//         If not mentioned, do not output corresponding parameter. Do not generate parameters which value is null! Please generate the corresponding JSON format. 
+//         Please check very carefully, expecially for city or state, do not forget them. When using a state name, please use the abbreviation of that state.
+//         For cities, if they are abbreviated, please use their full name. Do not give parameter 
+//         Please note that there are more or less related words in the input statement than similar ones. Do not forget maxPrice or minPrice or maxPrice.
+//         If content said need more or less bedrooms or bathrooms, please use minBedrooms, maxBedrooms, minBathrooms, maxBathrooms, instead of bedrooms or bathrooms`;
+
+//         // console.log('Received data: ', inputText);
+//         const text = await generateText(inputText);
+//         // console.log("text type: " + typeof(text));
+//         //const text = await generateText("Hello!");
+//         console.log('Get Data: ', text);
+//         const result = await findAds(text);
+//         console.log('Recieved result: ', result);
+//         res.json(result);
+//     } catch (error){
+//         console.error('Error processing Search request: ', error);
+//     }
+// });
+
+app.post('/Search', authenticate, checkRole(['admin', 'user']), async(req, res) => {
     try{
         console.log("string: " + req.body.data);
         const inputText = `Please analyze the following content ${req.body.data} and identify the corresponding variable values from the original text
@@ -62,8 +103,10 @@ app.post('/Search', async(req, res) => {
         res.json(result);
     } catch (error){
         console.error('Error processing Search request: ', error);
+        res.send(error.message);
     }
 });
+
 app.get('/GetCities', async(req, res) => {
     try{
         const cities = await outPutAllCity();
@@ -140,6 +183,3 @@ app.post('/data', (req, res) => {
     console.log('Reveived text: ',receivedText);
     res.send('Text received successfully');
 })
-// app.listen(port, () => {
-//     console.log(`服务器正在运行在 http://localhost:${port}`);
-// });
