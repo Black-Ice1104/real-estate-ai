@@ -22,7 +22,11 @@ router.post('/register', [
         await user.save();
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        let errorMessage = '';
+        if(error.code === 11000){
+            errorMessage = 'duplicated username';
+        }
+        res.status(400).json({ error: errorMessage });
     }
 
 });
@@ -54,7 +58,7 @@ router.post('/login', async (req, res) => {
             token
         });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.send(error.message);
     }
 });
 

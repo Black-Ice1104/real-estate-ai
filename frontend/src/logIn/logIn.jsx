@@ -36,7 +36,7 @@ function LoginPage() {
                 console.log('Login successfully');
                 handleClose();
             } else {
-                console.error('Login failed: ', data.message);
+                console.error('Login failed: ', data.error);
             }
         } catch (error) {
             console.error('Error during login:', error);

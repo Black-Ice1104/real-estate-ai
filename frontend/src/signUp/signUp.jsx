@@ -25,11 +25,13 @@ function SignUpPage() {
                 body: JSON.stringify({ username, password })
             });
             const data = await response.json();
-            if (data.token) {
+            if (data.message === 'User registered successfully') {
                 localStorage.setItem('token', data.token);
                 console.log('token: ', data.token);
                 alert('Signup successfully');
                 handleClose();
+            } else {
+                alert('Login failed: ', data.message);
             }
         } catch (error) {
             console.error('Error during Signup:', error);
@@ -75,7 +77,7 @@ function SignUpPage() {
                         Cancel
                     </Button>
                     <Button onClick={handleSignUp} color="primary">
-                        Log in
+                        Sign up
                     </Button>
                 </DialogActions>
             </Dialog>
