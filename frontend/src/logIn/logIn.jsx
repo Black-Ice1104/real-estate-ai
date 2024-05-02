@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar, Alert } from '@mui/material';
 
 function LoginPage() {
     const [open, setOpen] = useState(false); // 控制对话框开关
     const [username, setUsername] = useState(''); // 用户名
     const [password, setPassword] = useState(''); // 密码
+    const [openSnackbar, setOpenSnackbar] = useState(false); // 控制Snackbar开关
+    const [snackbarMessage, setSnackbarMessage] = useState('');
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -37,9 +39,13 @@ function LoginPage() {
                 handleClose();
             } else {
                 console.error('Login failed: ', data.error);
+                setSnackbarMessage('Invalid Username or Password');
+                setOpenSnackbar(true);
             }
         } catch (error) {
             console.error('Error during login:', error);
+            setSnackbarMessage("Server error");
+            setOpenSnackbar(true);
         }
     }
     return (
@@ -83,7 +89,13 @@ function LoginPage() {
                         Log in
                     </Button>
                 </DialogActions>
+                
             </Dialog>
+            <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={() => setOpenSnackbar(false)}>
+                <Alert onClose={() => setOpenSnackbar(false)} severity="error" sx={{ width: '100%' }}>
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
         </div>
     );
 }

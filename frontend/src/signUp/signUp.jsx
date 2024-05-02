@@ -14,33 +14,38 @@ function SignUpPage() {
         setOpen(false);
     };
 
-    const handleSignUp = async() => {
+    const handleSignUp = async () => {
         console.log('Username:', username, 'Password:', password);
-        try{
-            const response = await fetch('http://localhost:3001/api/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type' : 'application/json',
-                },
-                body: JSON.stringify({ username, password })
-            });
-            const data = await response.json();
-            if (data.message === 'User registered successfully') {
-                localStorage.setItem('token', data.token);
-                console.log('token: ', data.token);
-                alert('Signup successfully');
-                handleClose();
-            } else {
-                alert('Login failed: ', data.message);
+        if (username.length < 10) {
+            alert('Sign up failed: The length of username must be longer than 9')
+        } else {
+            try {
+                const response = await fetch('http://localhost:3001/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await response.json();
+                if (data.message === 'User registered successfully') {
+                    localStorage.setItem('token', data.token);
+                    console.log('token: ', data.token);
+                    alert('Signup successfully');
+                    handleClose();
+                } else {
+                    alert('Sign up failed: Duplicated username');
+                }
+            } catch (error) {
+                console.error('Error during Signup:', error);
             }
-        } catch (error) {
-            console.error('Error during Signup:', error);
         }
-        handleClose(); 
+
+        handleClose();
     };
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'start', alignItems: 'center', marginBottom:'5vh'}}>
+        <div style={{ display: 'flex', justifyContent: 'start', alignItems: 'center', marginBottom: '5vh' }}>
             <Button variant="outlined" color="primary" onClick={handleClickOpen}>
                 Sign Up
             </Button>

@@ -17,7 +17,7 @@ function MyFormComponent() {
 
     const [inputValue, setInputValue] = useState('');
     const [data, setData] = useState([]);
-    
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const token = localStorage.getItem('token');
@@ -28,7 +28,7 @@ function MyFormComponent() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization' : `Bearer ${token}`
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({ data: inputValue })
             });
@@ -47,16 +47,16 @@ function MyFormComponent() {
 
             <div style={{ display: 'flex', flexDirection: 'row' }}>
 
-                <div style={{ justifyContent: 'center', justifyContent: 'flex-start', marginTop: '5vh', marginLeft: '10vh',width:'70%' }}>
+                <div style={{ justifyContent: 'center', justifyContent: 'flex-start', marginTop: '5vh', marginLeft: '10vh', width: '70%' }}>
                     <div>
                         <div style={{ display: 'flex', flexDirection: 'row' }}>
-                            <LoginPage/>
+                            <LoginPage />
                             <SignUpPage />
-                            <LogOutComponent/>
+                            <LogOutComponent />
                         </div>
 
 
-                        <form onSubmit={handleSubmit} style={{width:'80%'}}>
+                        <form onSubmit={handleSubmit} style={{ width: '80%' }}>
                             <TextField
                                 multiline
                                 rows={4}
