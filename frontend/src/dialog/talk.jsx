@@ -47,7 +47,7 @@ function MyFormComponent() {
 
             <div style={{ display: 'flex', flexDirection: 'row' }}>
 
-                <div style={{ width: '70%', display: 'flex', justifyContent: 'center', justifyContent: 'flex-start', marginTop: '5vh', marginLeft: '10vh' }}>
+                <div style={{ justifyContent: 'center', justifyContent: 'flex-start', marginTop: '5vh', marginLeft: '10vh',width:'70%' }}>
                     <div>
                         <div style={{ display: 'flex', flexDirection: 'row' }}>
                             <LoginPage/>
@@ -56,7 +56,7 @@ function MyFormComponent() {
                         </div>
 
 
-                        <form onSubmit={handleSubmit} style={{ width: '80%' }}>
+                        <form onSubmit={handleSubmit} style={{width:'80%'}}>
                             <TextField
                                 multiline
                                 rows={4}
