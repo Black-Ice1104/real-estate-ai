@@ -16,11 +16,11 @@ function SignUpPage() {
 
     const handleSignUp = async () => {
         console.log('Username:', username, 'Password:', password);
-        if (username.length < 10) {
-            alert('Sign up failed: The length of username must be longer than 9')
+        if (username.length < 10 || password.length < 10) {
+            alert('Sign up failed: The length of username and password must be longer than 9')
         } else {
             try {
-                const response = await fetch('http://localhost:3001/api/register', {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}:3001/api/register`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -41,7 +41,6 @@ function SignUpPage() {
             }
         }
 
-        handleClose();
     };
 
     return (

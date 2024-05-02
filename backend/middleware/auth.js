@@ -10,7 +10,7 @@ export const authenticate = (req, res, next) => {
         next();
     } catch (error) {
         return res.status(401).json({
-            messgae: 'Authentication failed'
+            message: 'Authentication failed'
         });
     }
 };

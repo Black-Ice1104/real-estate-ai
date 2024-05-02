@@ -7,7 +7,7 @@ function CityList() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:3001/GetCities');
+                const response = await fetch(`${process.env.REACT_APP_API_URL}:3001/GetCities`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }

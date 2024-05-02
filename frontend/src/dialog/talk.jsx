@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button, Card, CardMedia, CardContent, Typography, Grid } from '@mui/material';
+import { TextField, Button, Card, CardMedia, CardContent, Typography, Grid, Snackbar } from '@mui/material';
 import CityList from '../cityList/CityList';
 import LoginPage from '../logIn/logIn';
 import SignUpPage from '../signUp/signUp';
@@ -17,6 +17,8 @@ function MyFormComponent() {
 
     const [inputValue, setInputValue] = useState('');
     const [data, setData] = useState([]);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -24,7 +26,7 @@ function MyFormComponent() {
         console.log(token);
         console.log('Sending data to backend:', inputValue);
         try {
-            const response = await fetch('http://localhost:3001/Search', {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}:3001/Search`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -35,10 +37,14 @@ function MyFormComponent() {
             console.log('Input value:', inputValue);
             const responseData = await response.json();
             console.log('Received from backend:', responseData);
+            if(responseData.message){
+                alert(responseData.message);
+            }
             setData(responseData);
         } catch (error) {
             console.error('Error sending data to backend:', error);
-            alert(error);
+            setSnackbarMessage('Authentication failed. Please Login!');
+            setOpenSnackbar(true);
         }
     };
 
