@@ -8,7 +8,7 @@ This platform is a web application designed for housing search, providing best-f
 You can access the application here: 云平台链接放这
 
 ## Running Locally
-First install [Node.js](https://nodejs.org/en)
+First install [Node.js](https://nodejs.org/en) from the offical website
 
 then install React for frontend use
 ```bash
