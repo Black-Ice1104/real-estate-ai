@@ -3,9 +3,9 @@ Real Estate AI is a tool processing the requirement that costumers needand aimmi
 ## Overview 
 This platform is a web application designed for housing search, providing best-fit housing information relating to the giving requirement.
 ## Live demo
-视频链接放这
+[video demo](https://drive.google.com/file/d/1WnAVj8_WzCqleusr3Mt-0-m-0gaB-DAw/view?usp=drive_link)
 ## Running in AWS
-You can access the application here: 云平台链接放这
+[AWS link](http://52.53.163.179:3000/)
 
 ## Running Locally
 First install [Node.js](https://nodejs.org/en) from the offical website
