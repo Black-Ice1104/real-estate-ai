@@ -10,7 +10,10 @@ You can access the application here: 云平台链接放这
 First install [Node.js](https://nodejs.org/en)
 
 then install React for frontend use
-```npm install react```
+```bash
+npm install react
+```
+
 
 Also install all the required middleware
 ```npm install axios
