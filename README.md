@@ -7,5 +7,15 @@ This platform is a web application designed for housing search, providing best-f
 ## Running in AWS
 You can access the application here: 云平台链接放这
 ## Running Locally
+First install [Node.js](website: https://nodejs.org/en)
+
+then install React for frontend use
+`npm install react`
+
+Also install all the required middleware
+`npm install axios
+npm install bcryptjs`
 First clone the whole project into your local storage
-git clone 
+` git clone https://github.com/Black-Ice1104/real-estate-ai.git`
+
+
