@@ -16,9 +16,15 @@ npm install react
 
 
 Also install all the required middleware
-```npm install axios
-npm install bcryptjs```
+
+```bash
+npm install axios
+npm install bcryptjs
+```
+
 First clone the whole project into your local storage
-` git clone https://github.com/Black-Ice1104/real-estate-ai.git`
+``` bash
+git clone https://github.com/Black-Ice1104/real-estate-ai.git
+```
 
 
