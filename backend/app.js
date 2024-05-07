@@ -103,7 +103,7 @@ app.post('/Search', authenticate, checkRole(['admin', 'user']), async(req, res) 
         res.json(result);
     } catch (error){
         console.error('Error processing Search request: ', error);
-        res.send(error.message);
+        res.status(500).send(error.message);
     }
 });
 
