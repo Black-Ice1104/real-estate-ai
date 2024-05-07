@@ -47,3 +47,14 @@ npm start
 
 You should now be able to access the application at http://localhost:3000.
 
+For the second terminal, change to the backend route by 
+```bash
+cd /real-estate-ai/backend
+```
+
+Run the backend by
+```bash
+node app.js
+```
+
+
